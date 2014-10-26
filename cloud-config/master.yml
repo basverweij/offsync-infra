@@ -31,7 +31,7 @@ coreos:
         Description=flannel is an etcd backed overlay network for containers
 
         [Service]
-        ExecStartPre=-/usr/bin/etcdctl rm --recursive /coreos.com/network/config
+        ExecStartPre=-/usr/bin/etcdctl rm --recursive /coreos.com/network/subnets
         ExecStartPre=-/usr/bin/etcdctl set /coreos.com/network/config '{"Network":"10.10.0.0/16"}'
         ExecStartPre=-/usr/bin/mkdir -p /opt/bin
         ExecStartPre=/usr/bin/wget -N -P /opt/bin http://storage.googleapis.com/flannel/flanneld
