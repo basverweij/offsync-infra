@@ -1,0 +1,29 @@
+#!/bin/bash
+
+PUBLIC_IP={{PUBLIC_IP}}
+PUBLIC_GW={{PUBLIC_GW}}
+PRIVATE_IP={{PRIVATE_IP}}
+ROLE={{ROLE}}
+HOSTNAME={{HOSTNAME}}
+
+config_url="https://raw.githubusercontent.com/basverweij/offsync-infra/master/cloud-config/$ROLE.yml"
+config_tmp="/tmp/config.yml"
+
+echo "Download $config_url to $config_tmp"
+rm -f "$config_tmp"
+wget -O "$config_tmp" "$config_url"
+
+echo "Replacing variables..."
+
+for var in PUBLIC_IP PUBLIC_GW PRIVATE_IP ROLE HOSTNAME; do
+
+  echo "- $var -> ${!var}"
+  sed -i "s/{{$var}}/${!var}/g" "$config_tmp"
+
+done
+
+echo "========"
+cat $config_tmp
+echo "========"
+
+/usr/bin/coreos-cloudinit --from-file="$config_tmp"
