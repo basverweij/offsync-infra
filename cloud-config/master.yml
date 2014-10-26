@@ -5,6 +5,27 @@ ssh_authorized_keys:
 
 hostname: {{HOSTNAME}}
 
+write_files:
+  - path: /opt/wait-for-flannel
+    permissions: 0755
+    owner: root
+    content: |
+      #!/bin/bash
+      
+      while true; do
+        
+        ip addr show | grep flannel0
+        
+        if [ "$?" -eq "0" ]; then
+          echo "Flannel interface available"
+          break
+        fi
+        
+        echo "Waiting for flannel interface to be available..."
+        sleep 5
+        
+      done
+
 coreos:
   etcd:
     name: etcd
