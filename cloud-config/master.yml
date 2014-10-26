@@ -1,0 +1,56 @@
+#cloud-config
+
+ssh_authorized_keys:
+  - ssh-rsa AAAAB3NzaC1yc2EAAAABJQAAAQEAnfZrbzi8PXHLo0anbOul7WutR3w2tjTkW6lwqeWih1psyLG0vtX2FthHSb4/LkH0S4sUuBKEd3A615m3JpF3afYRYrDuwkijntNL+orNssdUHESbOqvjKEdw8dCw9RlxkgnEJ5yj+CsIxu/46RCKgFxZsk0ggISgq8g4N4tz09E2QX8bZR7pWcNXpr4ZwTK9TI/OAkW8QeM/cehkXu2MyyRzHRAeGz52kBK4xvuEDuq7JBbhnIS3JUl4dXjTSNciu/kCc8a1redv6lVQf9SlLJj8T501vE80adNoGwbURsVeZG4UvrtutM+QCVRE+Y9CXh5jZoNE9ZjF/YkSKCb05Q== bas@off-sync.com
+
+coreos:
+  hostname: master
+  etcd:
+    name: etcd
+    addr: $private_ipv4:4001
+    bind-addr: 0.0.0.0
+    peer-addr: $private_ipv4:7001
+    cluster-active-size: 1
+    snapshot: true
+  fleet:
+    etcd_servers: http://127.0.0.1:4001
+    public-ip: $private_ipv4
+    metadata: role=master
+  units:
+    - name: etcd.service
+      command: start
+    - name: fleet.service
+      command: start
+    - name: flannel.service
+      command: start
+      content: |
+        [Unit]
+        After=network-online.target
+        Wants=network-online.target
+        Description=flannel is an etcd backed overlay network for containers
+
+        [Service]
+        ExecStartPre=-/usr/bin/etcdctl mk /coreos.com/network/config '{"Network":"10.10.0.0/16"}'
+        ExecStartPre=-/usr/bin/mkdir -p /opt/bin
+        ExecStartPre=/usr/bin/wget -N -P /opt/bin http://storage.googleapis.com/flannel/flanneld
+        ExecStartPre=/usr/bin/chmod +x /opt/bin/flanneld
+        ExecStart=/opt/bin/flanneld -etcd-endpoint http://$private_ipv4:4001 -iface $private_ipv4
+    - name: docker.service
+      command: start
+      content: |
+        [Unit]
+        After=flannel.service
+        Wants=flannel.service
+        Description=Docker Application Container Engine
+        Documentation=http://docs.docker.io
+
+        [Service]
+        EnvironmentFile=/run/flannel/subnet.env
+        ExecStartPre=/bin/mount --make-rprivate /
+        ExecStart=/usr/bin/docker -d --bip=${FLANNEL_SUBNET} --mtu=${FLANNEL_MTU} -s=btrfs -H fd://
+
+        [Install]
+        WantedBy=multi-user.target
+  update:
+    group: alpha
+    reboot-strategy: off
