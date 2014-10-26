@@ -7,14 +7,14 @@ coreos:
   hostname: master
   etcd:
     name: etcd
-    addr: $private_ipv4:4001
+    addr: 80.85.85.168:4001
     bind-addr: 0.0.0.0
-    peer-addr: $private_ipv4:7001
+    peer-addr: 80.85.85.168:7001
     cluster-active-size: 1
     snapshot: true
   fleet:
     etcd_servers: http://127.0.0.1:4001
-    public-ip: $private_ipv4
+    public-ip: 80.85.85.168
     metadata: role=master
   units:
     - name: etcd.service
@@ -34,7 +34,7 @@ coreos:
         ExecStartPre=-/usr/bin/mkdir -p /opt/bin
         ExecStartPre=/usr/bin/wget -N -P /opt/bin http://storage.googleapis.com/flannel/flanneld
         ExecStartPre=/usr/bin/chmod +x /opt/bin/flanneld
-        ExecStart=/opt/bin/flanneld -etcd-endpoint http://$private_ipv4:4001 -iface $private_ipv4
+        ExecStart=/opt/bin/flanneld -etcd-endpoint http://80.85.85.168:4001 -iface 80.85.85.168
     - name: docker.service
       command: start
       content: |
