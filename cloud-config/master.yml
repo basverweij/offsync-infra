@@ -3,8 +3,9 @@
 ssh_authorized_keys:
   - ssh-rsa AAAAB3NzaC1yc2EAAAABJQAAAQEAnfZrbzi8PXHLo0anbOul7WutR3w2tjTkW6lwqeWih1psyLG0vtX2FthHSb4/LkH0S4sUuBKEd3A615m3JpF3afYRYrDuwkijntNL+orNssdUHESbOqvjKEdw8dCw9RlxkgnEJ5yj+CsIxu/46RCKgFxZsk0ggISgq8g4N4tz09E2QX8bZR7pWcNXpr4ZwTK9TI/OAkW8QeM/cehkXu2MyyRzHRAeGz52kBK4xvuEDuq7JBbhnIS3JUl4dXjTSNciu/kCc8a1redv6lVQf9SlLJj8T501vE80adNoGwbURsVeZG4UvrtutM+QCVRE+Y9CXh5jZoNE9ZjF/YkSKCb05Q== bas@off-sync.com
 
+hostname: master
+
 coreos:
-  hostname: master
   etcd:
     name: etcd
     addr: {{PUBLIC_IP}}:4001
