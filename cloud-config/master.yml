@@ -93,5 +93,5 @@ coreos:
         [Install]
         WantedBy=multi-user.target
   update:
-    group: alpha
+    group: stable
     reboot-strategy: off
