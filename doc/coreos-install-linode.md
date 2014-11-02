@@ -31,3 +31,10 @@ wget https://raw.githubusercontent.com/basverweij/offsync-infra/master/cloud-con
 ```
 bash ./coreos-install -C stable -d /dev/xvdb -c user-data
 ```
+4. Move grub
+```
+mkdir /mnt/core-boot
+rm -rf /boot/grub
+mount /dev/xvdb1 /mnt/core-boot
+mv /mnt/core-boot/boot/grub /boot
+```
