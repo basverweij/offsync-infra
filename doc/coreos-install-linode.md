@@ -17,4 +17,12 @@ apt-get update
 apt-get install grub-legacy
 ```
 2. Set kernel to pv-grub-x86_64
-3. Set xenify distro to disabled
+3. Set 'Xenify Distro' to 'No'
+
+## Install CoreOS
+1. Download installer
+```
+cd /root
+wget https://raw.githubusercontent.com/coreos/init/master/bin/coreos-install
+```
+2. 
