@@ -28,7 +28,7 @@ write_files:
 
 coreos:
   fleet:
-    etcd_servers: http://127.0.0.1:4001
+    etcd_servers: http://{{ETCD_ENDPOINT}}:4001
     public-ip: {{PUBLIC_IP}}
     metadata: role={{ROLE}}
   units:
@@ -50,7 +50,7 @@ coreos:
         ExecStartPre=-/usr/bin/mkdir -p /opt/bin
         ExecStartPre=/usr/bin/wget -N -P /opt/bin http://storage.googleapis.com/flannel/flanneld
         ExecStartPre=/usr/bin/chmod +x /opt/bin/flanneld
-        ExecStart=/opt/bin/flanneld -etcd-endpoint http://{{PUBLIC_IP}}:4001 -iface {{PUBLIC_IP}}
+        ExecStart=/opt/bin/flanneld -etcd-endpoint http://{{ETCD_ENDPOINT}}:4001 -iface {{ETCD_ENDPOINT}}
     - name: wait-for-flannel.service
       command: start
       content: |
