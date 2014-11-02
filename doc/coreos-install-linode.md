@@ -12,9 +12,9 @@ http://nickrandell.wordpress.com/2014/09/29/installing-coreos-on-linode/
 
 ## Install pv-grub and update boot settings
 1. Install pv-grub 
-  ```
-  apt-get update
-  apt-get install grub-legacy
-  ```
+```
+apt-get update
+apt-get install grub-legacy
+```
 2. Set kernel to pv-grub-x86_64
 3. Set xenify distro to disabled
