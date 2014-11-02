@@ -26,4 +26,7 @@ cd /root
 wget https://raw.githubusercontent.com/coreos/init/master/bin/coreos-install
 wget https://raw.githubusercontent.com/basverweij/offsync-infra/master/cloud-config/user-data
 ```
-2. 
+2. Run the installer
+```
+bash ./coreos-install -d /dev/xvdb -c user-data
+```
