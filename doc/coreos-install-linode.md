@@ -37,4 +37,6 @@ mkdir /mnt/core-boot
 rm -rf /boot/grub
 mount /dev/xvdb1 /mnt/core-boot
 mv /mnt/core-boot/boot/grub /boot
+sed -i 's/(hd0,0)/(hd1,0)/g' /boot/grub/menu.lst
 ```
+5. Reboot via Linode Manager
