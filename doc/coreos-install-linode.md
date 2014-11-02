@@ -20,7 +20,8 @@ apt-get install grub-legacy
 3. Set 'Xenify Distro' to 'No'
 
 ## Install CoreOS
-1. Download installer and Off-Sync userdata ```
+1. Download installer and Off-Sync userdata
+```
 cd /root
 wget https://raw.githubusercontent.com/coreos/init/master/bin/coreos-install
 wget https://raw.githubusercontent.com/basverweij/offsync-infra/master/cloud-config/user-data
