@@ -84,7 +84,7 @@ coreos:
         [Unit]
         After=network-online.target
         Wants=network-online.target
-        Description=Etcd backend configuration daemon
+        Description=Etcd backed configuration daemon
         
         [Service]
         ExecStartPre=-/usr/bin/mkdir -p /opt/bin
