@@ -69,9 +69,9 @@ coreos:
         [Service]
         ExecStartPre=-/usr/bin/mkdir -p /opt/bin
         ExecStartPre=/usr/bin/mkdir -p /etc/confd
-        ExecStartPre=/usr/bin/wget -N -O /opt/bin/confd https://github.com/kelseyhightower/confd/releases/download/v0.6.3/confd-0.6.3-linux-amd64
-        ExecStartPre=/usr/bin/chmod +x /opt/bin/confd
-        ExecStart=/opt/bin/confd -node=http://{{ETCD_ENDPOINT}}:4001 -interval=10
+        ExecStartPre=/usr/bin/wget -N -P https://github.com/kelseyhightower/confd/releases/download/v0.6.3/confd-0.6.3-linux-amd64
+        ExecStartPre=/usr/bin/chmod +x /opt/bin/confd-0.6.3-linux-amd64
+        ExecStart=/opt/bin/confd-0.6.3-linux-amd64 -node=http://{{ETCD_ENDPOINT}}:4001 -interval=10
   update:
     group: stable
     reboot-strategy: off
