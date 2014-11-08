@@ -15,6 +15,17 @@ coreos:
       mask: true
     - name: fleet.service
       command: start
+    - name: 00-eth0.network
+      runtime: true
+      content: |
+        [Match]
+        Name=eth0
+
+        [Network]
+        DNS={{PUBLIC_DNS}}
+        Address={{PUBLIC_IP}}
+        Gateway={{PUBLIC_GW}}
+        Address={{PRIVATE_IP}}
     - name: flannel.service
       command: start
       content: |
