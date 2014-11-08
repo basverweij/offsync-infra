@@ -80,7 +80,8 @@ coreos:
         
         [Service]
         ExecStartPre=-/usr/bin/mkdir -p /opt/bin
-        ExecStartPre=/usr/bin/mkdir -p /etc/confd/{conf.d,templates}
+        ExecStartPre=/usr/bin/mkdir -p /etc/confd/conf.d
+        ExecStartPre=/usr/bin/mkdir -p /etc/confd/templates
         ExecStartPre=/usr/bin/wget -N -P /opt/bin https://github.com/kelseyhightower/confd/releases/download/v0.6.3/confd-0.6.3-linux-amd64
         ExecStartPre=/usr/bin/chmod +x /opt/bin/confd-0.6.3-linux-amd64
         ExecStart=/opt/bin/confd-0.6.3-linux-amd64 -node=http://{{ETCD_ENDPOINT}}:4001 -interval=10
