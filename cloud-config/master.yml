@@ -8,14 +8,14 @@ hostname: {{HOSTNAME}}
 coreos:
   etcd:
     name: etcd
-    addr: {{PUBLIC_IP}}:4001
+    addr: {{PRIVATE_IP}}:4001
     bind-addr: 0.0.0.0
-    peer-addr: {{PUBLIC_IP}}:7001
+    peer-addr: {{PRIVATE_IP}}:7001
     cluster-active-size: 1
     snapshot: true
   fleet:
     etcd_servers: http://127.0.0.1:4001
-    public-ip: {{PUBLIC_IP}}
+    public-ip: {{PRIVATE_IP}}
     metadata: role={{ROLE}}
   units:
     - name: etcd.service
@@ -42,12 +42,12 @@ coreos:
 
         [Service]
         Type=notify
-        ExecStartPre=-/usr/bin/etcdctl rm --recursive /coreos.com/network/subnets
+        #ExecStartPre=-/usr/bin/etcdctl rm --recursive /coreos.com/network/subnets
         ExecStartPre=-/usr/bin/etcdctl set /coreos.com/network/config '{"Network":"10.10.0.0/16"}'
         ExecStartPre=-/usr/bin/mkdir -p /opt/bin
         ExecStartPre=/usr/bin/wget -N -P /opt/bin http://storage.googleapis.com/flannel/flanneld
         ExecStartPre=/usr/bin/chmod +x /opt/bin/flanneld
-        ExecStart=/opt/bin/flanneld -etcd-endpoint http://{{PUBLIC_IP}}:4001 -iface {{PUBLIC_IP}}
+        ExecStart=/opt/bin/flanneld -etcd-endpoint http://127.0.0.1:4001 -iface {{PRIVATE}}
     - name: docker.service
       command: start
       content: |
