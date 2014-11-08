@@ -8,7 +8,7 @@ hostname: {{HOSTNAME}}
 coreos:
   fleet:
     etcd_servers: http://{{ETCD_ENDPOINT}}:4001
-    public-ip: {{PUBLIC_IP}}
+    public-ip: {{PRIVATE_IP}}
     metadata: role={{ROLE}}
   units:
     - name: etcd.service
@@ -41,7 +41,7 @@ coreos:
         ExecStartPre=-/usr/bin/mkdir -p /opt/bin
         ExecStartPre=/usr/bin/wget -N -P /opt/bin http://storage.googleapis.com/flannel/flanneld
         ExecStartPre=/usr/bin/chmod +x /opt/bin/flanneld
-        ExecStart=/opt/bin/flanneld -etcd-endpoint http://{{ETCD_ENDPOINT}}:4001 -iface {{PUBLIC_IP}}
+        ExecStart=/opt/bin/flanneld -etcd-endpoint http://{{ETCD_ENDPOINT}}:4001 -iface {{PRIVATE_IP}}
     - name: docker.service
       command: start
       content: |
@@ -69,7 +69,7 @@ coreos:
         [Service]
         ExecStartPre=-/usr/bin/mkdir -p /opt/bin
         ExecStartPre=/usr/bin/mkdir -p /etc/confd
-        ExecStartPre=/usr/bin/wget -N -P https://github.com/kelseyhightower/confd/releases/download/v0.6.3/confd-0.6.3-linux-amd64
+        ExecStartPre=/usr/bin/wget -N -P /opt/bin https://github.com/kelseyhightower/confd/releases/download/v0.6.3/confd-0.6.3-linux-amd64
         ExecStartPre=/usr/bin/chmod +x /opt/bin/confd-0.6.3-linux-amd64
         ExecStart=/opt/bin/confd-0.6.3-linux-amd64 -node=http://{{ETCD_ENDPOINT}}:4001 -interval=10
   update:
