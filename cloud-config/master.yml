@@ -13,6 +13,7 @@ write_files:
       # Use most defaults for sshd configuration.
       UsePrivilegeSeparation sandbox
       Subsystem sftp internal-sftp
+      
       PermitRootLogin no
       AllowUsers core
       PasswordAuthentication no
