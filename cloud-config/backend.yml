@@ -45,34 +45,17 @@ coreos:
         Description=flannel is an etcd backed overlay network for containers
 
         [Service]
+        Type=notify
         ExecStartPre=-/usr/bin/etcdctl rm --recursive /coreos.com/network/subnets
         ExecStartPre=-/usr/bin/etcdctl set /coreos.com/network/config '{"Network":"10.10.0.0/16"}'
         ExecStartPre=-/usr/bin/mkdir -p /opt/bin
         ExecStartPre=/usr/bin/wget -N -P /opt/bin http://storage.googleapis.com/flannel/flanneld
         ExecStartPre=/usr/bin/chmod +x /opt/bin/flanneld
         ExecStart=/opt/bin/flanneld -etcd-endpoint http://{{ETCD_ENDPOINT}}:4001 -iface {{PUBLIC_IP}}
-    - name: wait-for-flannel.service
-      command: start
-      content: |
-        [Unit]
-        After=flannel.service
-        Wants=flannel.service
-        Description=Helper script that waits for the flannel interface to become available
-        
-        [Service]
-        ExecStart=/opt/bin/wait-for-flannel
-        RemainAfterExit=yes
-        Restart=no
-        Type=oneshot
-        
-        [Install]
-        WantedBy=multi-user.target
     - name: docker.service
       command: start
       content: |
         [Unit]
-        After=wait-for-flannel.service
-        Wants=wait-for-flannel.service
         After=flannel.service
         Wants=flannel.service
         Description=Docker Application Container Engine
