@@ -25,7 +25,7 @@ coreos:
         DNS={{PUBLIC_DNS}}
         Address={{PUBLIC_IP}}
         Gateway={{PUBLIC_GW}}
-        Address={{PRIVATE_IP}}
+        Address={{PRIVATE_IP}}/{{PRIVATE_NM}}
     - name: flannel.service
       command: start
       content: |
