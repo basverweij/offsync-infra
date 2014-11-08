@@ -5,27 +5,6 @@ ssh_authorized_keys:
 
 hostname: {{HOSTNAME}}
 
-write_files:
-  - path: /opt/bin/wait-for-flannel
-    permissions: 0755
-    owner: root
-    content: |
-      #!/bin/bash
-      
-      while true; do
-        
-        ip addr show | grep flannel0
-        
-        if [ "$?" -eq "0" ]; then
-          echo "Flannel interface available"
-          break
-        fi
-        
-        echo "Waiting for flannel interface to be available..."
-        sleep 5
-        
-      done
-
 coreos:
   etcd:
     name: etcd
@@ -43,6 +22,16 @@ coreos:
       command: start
     - name: fleet.service
       command: start
+    - name: 00-eth0.network
+      runtime: true
+      content: |
+        [Match]
+        Name=eth0
+        [Network]
+        DNS={{PUBLIC_DNS}}
+        Address={{PUBLIC_IP}}
+        Gateway={{PUBLIC_GW}}
+        Address={{PRIVATE_IP}}/{{PRIVATE_NM}}
     - name: flannel.service
       command: start
       content: |
@@ -52,28 +41,13 @@ coreos:
         Description=flannel is an etcd backed overlay network for containers
 
         [Service]
+        Type=notify
         ExecStartPre=-/usr/bin/etcdctl rm --recursive /coreos.com/network/subnets
         ExecStartPre=-/usr/bin/etcdctl set /coreos.com/network/config '{"Network":"10.10.0.0/16"}'
         ExecStartPre=-/usr/bin/mkdir -p /opt/bin
         ExecStartPre=/usr/bin/wget -N -P /opt/bin http://storage.googleapis.com/flannel/flanneld
         ExecStartPre=/usr/bin/chmod +x /opt/bin/flanneld
         ExecStart=/opt/bin/flanneld -etcd-endpoint http://{{PUBLIC_IP}}:4001 -iface {{PUBLIC_IP}}
-    - name: wait-for-flannel.service
-      command: start
-      content: |
-        [Unit]
-        After=flannel.service
-        Wants=flannel.service
-        Description=Helper script that waits for the flannel interface to become available
-        
-        [Service]
-        ExecStart=/opt/bin/wait-for-flannel
-        RemainAfterExit=yes
-        Restart=no
-        Type=oneshot
-        
-        [Install]
-        WantedBy=multi-user.target
     - name: docker.service
       command: start
       content: |
