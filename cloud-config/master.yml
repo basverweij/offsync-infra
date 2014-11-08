@@ -47,7 +47,7 @@ coreos:
         ExecStartPre=-/usr/bin/mkdir -p /opt/bin
         ExecStartPre=/usr/bin/wget -N -P /opt/bin http://storage.googleapis.com/flannel/flanneld
         ExecStartPre=/usr/bin/chmod +x /opt/bin/flanneld
-        ExecStart=/opt/bin/flanneld -etcd-endpoint http://127.0.0.1:4001 -iface {{PRIVATE}}
+        ExecStart=/opt/bin/flanneld -etcd-endpoint http://127.0.0.1:4001 -iface {{PRIVATE_IP}}
     - name: docker.service
       command: start
       content: |
