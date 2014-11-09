@@ -1,0 +1,16 @@
+[Unit]
+Description=MongoDB
+After=docker.service
+Requires=docker.service
+
+[Service]
+TimeoutStartSec=0
+ExecStartPre=/usr/bin/mkdir -p /srv/mongodb/data/db
+ExecStartPre=-/usr/bin/docker kill mongodb
+ExecStartPre=-/usr/bin/docker rm mongodb
+ExecStartPre=/usr/bin/docker pull mongo:latest
+ExecStart=/usr/bin/docker run -v /srv/mongodb/data/db:/data/db --name mongodb mongo:latest
+ExecStop=/usr/bin/docker stop mongodb
+
+[X-Fleet]
+MachineMetadata=role=backend
