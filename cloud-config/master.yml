@@ -56,6 +56,7 @@ coreos:
 
         [Service]
         Type=notify
+        TimeoutStartSec=0
         ExecStartPre=-/usr/bin/etcdctl set /coreos.com/network/config '{"Network":"10.10.0.0/16"}'
         ExecStartPre=-/usr/bin/mkdir -p /opt/bin
         ExecStartPre=/usr/bin/wget -N -P /opt/bin https://www.dropbox.com/s/f6n8zjno6uspqru/flanneld
@@ -88,6 +89,7 @@ coreos:
         Description=Etcd backed configuration daemon
         
         [Service]
+        TimeoutStartSec=0
         ExecStartPre=-/usr/bin/mkdir -p /opt/bin
         ExecStartPre=/usr/bin/mkdir -p /etc/confd/conf.d
         ExecStartPre=/usr/bin/mkdir -p /etc/confd/templates
