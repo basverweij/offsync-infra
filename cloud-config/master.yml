@@ -59,7 +59,7 @@ coreos:
         TimeoutStartSec=0
         ExecStartPre=-/usr/bin/etcdctl set /coreos.com/network/config '{"Network":"10.10.0.0/16"}'
         ExecStartPre=-/usr/bin/mkdir -p /opt/bin
-        ExecStartPre=/usr/bin/test -e /opt/bin/flanneld || /usr/bin/wget -N -P /opt/bin https://www.dropbox.com/s/f6n8zjno6uspqru/flanneld
+        #ExecStartPre=/usr/bin/test -e /opt/bin/flanneld || /usr/bin/wget -N -P /opt/bin https://www.dropbox.com/s/f6n8zjno6uspqru/flanneld
         ExecStartPre=/usr/bin/chmod +x /opt/bin/flanneld
         ExecStart=/opt/bin/flanneld -etcd-endpoint http://{{ETCD_ENDPOINT}}:4001 -iface {{PRIVATE_IP}}
     - name: docker.service
@@ -93,7 +93,7 @@ coreos:
         ExecStartPre=-/usr/bin/mkdir -p /opt/bin
         ExecStartPre=/usr/bin/mkdir -p /etc/confd/conf.d
         ExecStartPre=/usr/bin/mkdir -p /etc/confd/templates
-        ExecStartPre=/usr/bin/test -e /opt/bin/confd || /usr/bin/wget -N -P /opt/bin https://www.dropbox.com/s/gsgjnn2g2n7vaol/confd
+        #ExecStartPre=/usr/bin/test -e /opt/bin/confd || /usr/bin/wget -N -P /opt/bin https://www.dropbox.com/s/gsgjnn2g2n7vaol/confd
         ExecStartPre=/usr/bin/chmod +x /opt/bin/confd
         ExecStart=/opt/bin/confd -node=http://{{ETCD_ENDPOINT}}:4001 -interval=10
   update:
