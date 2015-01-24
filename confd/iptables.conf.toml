@@ -1,0 +1,15 @@
+*nat
+
+COMMIT
+
+
+*filter
+:INPUT ACCEPT [0:0]
+:FORWARD ACCEPT [0:0]
+:OUTPUT ACCEPT [0:0]
+
+{{range gets "/off-sync/infra/iptables/master/*"}}#{{.Key}}
+{{.Value}}
+{{end}}
+COMMIT
+
