@@ -1,0 +1,7 @@
+[template]
+src = "iptables.conf.tmpl"
+dest = "/etc/iptables.conf"
+keys = [
+  "/off-sync/infra/iptables/master"
+]
+reload_cmd = "cat /etc/iptables.conf | /usr/sbin/iptables-restore"
