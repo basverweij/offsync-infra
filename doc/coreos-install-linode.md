@@ -5,8 +5,8 @@
 
 ## Create Linode
 1. 1024 MB disk for Debian, 512MB swap
-3. 6656 MB disk for CoreOS (unformatted/raw)
-4. Rest (16384 MB) for Srv
+3. 16384 MB disk for CoreOS (unformatted/raw)
+4. Rest (31232 MB) for Srv
 5. Update disk configuration:
   * CoreOS on /dev/xvdb
   * swap on /dev/xvdc
